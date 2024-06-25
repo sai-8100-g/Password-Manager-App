@@ -9,6 +9,7 @@ import './index.css'
 class Password extends Component {
   state = {
     passwordList: [],
+    filteredList: [],
     webAddress: '',
     userName: '',
     password: '',
@@ -35,6 +36,7 @@ class Password extends Component {
 
       this.setState(prevState => ({
         passwordList: [...prevState.passwordList, newPasswordObj],
+        filteredList: [...prevState.filteredList, newPasswordObj],
         webAddress: '',
         userName: '',
         password: '',
@@ -57,7 +59,7 @@ class Password extends Component {
 
   deletePassword = id => {
     this.setState(prevState => ({
-      passwordList: prevState.passwordList.filter(eachObj => eachObj.id !== id),
+      filteredList: prevState.filteredList.filter(eachObj => eachObj.id !== id),
       count: prevState.count - 1,
     }))
   }
@@ -68,11 +70,8 @@ class Password extends Component {
 
   filteringObjs = event => {
     const input = event.target.value.toLocaleLowerCase()
-    if (input === '') {
-      this.setState({count: 0})
-    }
     this.setState(prevState => ({
-      passwordList: prevState.passwordList.filter(
+      filteredList: prevState.passwordList.filter(
         eachObj =>
           eachObj.webSiteName.toLocaleLowerCase().includes(input) ||
           eachObj.userName.toLocaleLowerCase().includes(input),
@@ -82,7 +81,7 @@ class Password extends Component {
 
   render() {
     const {
-      passwordList,
+      filteredList,
       errorAll,
       webAddress,
       userName,
@@ -91,7 +90,7 @@ class Password extends Component {
       count,
     } = this.state
     console.log(isShowPassword)
-    const isHavePasswords = passwordList.length !== 0
+    const isHavePasswords = filteredList.length !== 0
     return (
       <div className="main">
         <div className="logo">
@@ -190,7 +189,7 @@ class Password extends Component {
             </div>
           ) : (
             <ul>
-              {passwordList.map(eachObj => (
+              {filteredList.map(eachObj => (
                 <PasswordItem
                   passwordObj={eachObj}
                   isShowPassword={isShowPassword}
